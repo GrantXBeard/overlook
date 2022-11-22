@@ -3,9 +3,12 @@ import './App.css';
 
 function App() {
 
-  const [customers, setCustomers] = useState()
+  const [currentUser, setCurrentUser] = useState()
+  const [customers, setCustomers] = useState([])
   const [rooms, setRooms] = useState()
   const [bookings, setBookings] = useState()
+
+  
 
 
   const fetchData = (dataSet: string) => {
@@ -27,7 +30,10 @@ function App() {
     })
   }, []);
 
-console.log(customers)
+  const getCurrentUser = (id: number) => {
+   const user =  customers.find(customer => customer.id === id)
+  }
+
   return (
     <div>APP</div>
   );
