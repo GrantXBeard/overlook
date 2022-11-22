@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
+import { ICustomerData } from './Types/Customers'
 
 function App() {
 
@@ -31,11 +32,12 @@ function App() {
   }, []);
 
   const getCurrentUser = (id: number) => {
-   const user =  customers.find(customer => customer.id === id)
+   const user =  customers.find((customer: ICustomerData) => customer.id === id)
+   setCurrentUser(user)
   }
-
+console.log(currentUser)
   return (
-    <div>APP</div>
+    <div onClick={() => getCurrentUser(1) }>APP</div>
   );
 }
 
