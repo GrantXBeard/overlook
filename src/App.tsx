@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import { ICustomerData, IBookingData } from './Types/OverlookTypes'
+import { ICustomerData, IBookingData, IRoomData } from './Types/OverlookTypes'
 
 function App() {
 
 
   const [currentUser, setCurrentUser] = useState()
   const [customers, setAllCustomers] = useState([])
-  const [rooms, setAllRooms] = useState()
+  const [rooms, setAllRooms] = useState([])
   const [bookings, setAllBookings] = useState([])
 
   const [userBookings, setUserBookings] = useState([])
@@ -38,18 +38,32 @@ function App() {
    const user: any =  customers.find((customer: ICustomerData) => customer.id === id)
    setCurrentUser(user)
    getCurrentBookings(user.id)
+   getTotalRoomCost()
   }
 
   const getCurrentBookings = (id: number) => {
     const userBookings = bookings.filter((booking: IBookingData) => booking.userID === id)
     setUserBookings(userBookings)
-    console.log(userBookings)
-
   }
 
-console.log(currentUser)
+  const getTotalRoomCost = () => {
+    let total = rooms.reduce((acc: number, curr: IRoomData) => {
+
+      userBookings.forEach((booking: IBookingData) => {
+        if (booking.roomNumber === curr.number) {
+          acc += curr.costPerNight
+        }
+      })
+      return acc
+    }, 0)
+    console.log(total.toFixed(2))
+    return total.toFixed(2)
+  }
+
   return (
+    <>
     <div onClick={() => getCurrentUser(1) }>APP</div>
+    </>
   );
 }
 
