@@ -9,3 +9,12 @@ export interface IBookingData {
     date: string;
     roomNumber: number
 }
+
+export interface IRoomData {
+    number: number;
+    roomType: string;
+    bidet: boolean;
+    bedSize: string;
+    numBeds: number;
+    costPerNight: number
+}
