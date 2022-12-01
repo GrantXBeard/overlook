@@ -13,7 +13,7 @@ const Display = ({ bookings }: IDisplayProps) => {
         return(
             <div className="display-card" key={booking.id}>
                 <p>{booking.date}</p>
-                <p>{booking.roomNumber}</p>
+                <p>Room: {booking.roomNumber}</p>
             </div>
         )
     })
