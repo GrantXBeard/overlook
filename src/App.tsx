@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Login from './Components/Login/Login';
+import Display from './Components/Display/Display';
 import { ICustomerData, IBookingData, IRoomData } from './Types/OverlookTypes'
 
 function App() {
@@ -79,6 +80,7 @@ function App() {
       <>
         <p>{`Welcome Back ${currentUser.name.split(' ')[0]}!`}</p>
         <p>{`You've spent $${getTotalRoomCost()} on bookings.`}</p>
+        <Display  bookings={userBookings}/>
       </>
       }
     </>

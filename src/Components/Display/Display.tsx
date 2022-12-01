@@ -1,6 +1,12 @@
 import React from "react";
+import { IBookingData } from "../../Types/OverlookTypes";
 
-const Display = () => {
+
+interface IDisplayProps {
+    bookings: IBookingData[]
+}
+
+const Display = ({ bookings }: IDisplayProps) => {
     return (
         <div>Display</div>
     )
