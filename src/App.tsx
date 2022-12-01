@@ -1,19 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
+import Login from './Components/Login/Login';
 import { ICustomerData, IBookingData, IRoomData } from './Types/OverlookTypes'
 
 function App() {
 
 
-  const [currentUser, setCurrentUser] = useState()
+  const [currentUser, setCurrentUser] = useState<ICustomerData>()
   const [customers, setAllCustomers] = useState([])
   const [rooms, setAllRooms] = useState([])
   const [bookings, setAllBookings] = useState([])
-
   const [userBookings, setUserBookings] = useState([])
-
-  
-
+  const [errorMessage, setErrorMessage] = useState('')
 
   const fetchData = (dataSet: string) => {
     return fetch(`http://localhost:3001/api/v1/${dataSet}`).then((res) => res.json())
@@ -33,6 +31,18 @@ function App() {
       setAllBookings(data[2].bookings)
     })
   }, []);
+
+  const checkLoginInput = (username: string, password: string) => {
+    let id = parseInt(username.split('').splice(8).join(''))
+    customers.forEach((customer: ICustomerData) => {
+      if (customer.id === id && password === 'overlook2021') {
+        setErrorMessage('')
+        getCurrentUser(id)
+      } else {
+        setErrorMessage('Please enter a valid username and password')
+      }
+    })
+  }
 
   const getCurrentUser = (id: number) => {
    const user: any =  customers.find((customer: ICustomerData) => customer.id === id)
@@ -56,13 +66,21 @@ function App() {
       })
       return acc
     }, 0)
-    console.log(total.toFixed(2))
     return total.toFixed(2)
   }
+  console.log(currentUser)
 
   return (
     <>
-    <div onClick={() => getCurrentUser(1) }>APP</div>
+      <div>APP</div>
+      {currentUser === undefined && <Login handleUserInput={checkLoginInput}/>}
+      {/* {errorMessage.length > 1 && <h2>{errorMessage}</h2>} */}
+      {currentUser && 
+      <>
+        <p>{`Welcome Back ${currentUser.name.split(' ')[0]}!`}</p>
+        <p>{`You've spent $${getTotalRoomCost()} on bookings.`}</p>
+      </>
+      }
     </>
   );
 }
