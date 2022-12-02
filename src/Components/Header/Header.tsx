@@ -4,9 +4,10 @@ import { ICustomerData } from "../../Types/OverlookTypes"
 interface IHeaderProps {
     user: ICustomerData | undefined;
     roomCost: string
+    setShowAdd: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Header = ({ user, roomCost}: IHeaderProps) => {
+const Header = ({ user, roomCost, setShowAdd}: IHeaderProps) => {
     return (
         <div>
             <h1>Overlook</h1>
@@ -15,7 +16,7 @@ const Header = ({ user, roomCost}: IHeaderProps) => {
                 <p>{`Welcome Back ${user.name.split(' ')[0]}!`}</p>
                 <p>{`You've spent $${roomCost} on bookings.`}</p>
                 <div>
-                    <button>Add Booking</button>
+                    <button onClick={() => setShowAdd(true)}>Add Booking</button>
                 </div>
             </>
             }
