@@ -9,7 +9,7 @@ interface IDisplayProps {
 
 const Display = ({ bookings }: IDisplayProps) => {
 
-    const cards = bookings.map(booking => {
+    const bookedCards = bookings.map(booking => {
         return(
             <div className="display-card" key={booking.id}>
                 <p>{booking.date}</p>
@@ -19,7 +19,7 @@ const Display = ({ bookings }: IDisplayProps) => {
     })
 
     return (
-        <div>{cards}</div>
+        <div>{bookedCards}</div>
     )
 }
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Login from './Components/Login/Login';
 import Display from './Components/Display/Display';
+import Header from './Components/Header/Header';
 import { ICustomerData, IBookingData, IRoomData } from './Types/OverlookTypes'
 
 function App() {
@@ -70,10 +71,9 @@ function App() {
 
   return (
     <>
+      <Header user={currentUser} roomCost={getTotalRoomCost()}/>
       {!currentUser ? <Login handleUserInput={checkLoginInput}/> : 
       <>
-        <p>{`Welcome Back ${currentUser.name.split(' ')[0]}!`}</p>
-        <p>{`You've spent $${getTotalRoomCost()} on bookings.`}</p>
         <Display  bookings={userBookings}/>
       </>}
       {errorMessage && errorMessage}
