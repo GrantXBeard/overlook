@@ -13,6 +13,7 @@ function App() {
   const [bookings, setAllBookings] = useState([])
   const [userBookings, setUserBookings] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
+  const [showAdd, setShowAdd] = useState(false)
 
   const fetchData = (dataSet: string) => {
     return fetch(`http://localhost:3001/api/v1/${dataSet}`).then((res) => res.json())
@@ -42,7 +43,6 @@ function App() {
     } else {
     setErrorMessage('Please enter a valid username and password')
     }
-    
   }
 
   const getCurrentUser = (id: number) => {
@@ -71,10 +71,10 @@ function App() {
 
   return (
     <>
-      <Header user={currentUser} roomCost={getTotalRoomCost()}/>
+      <Header user={currentUser} roomCost={getTotalRoomCost()} setShowAdd={setShowAdd}/>
       {!currentUser ? <Login handleUserInput={checkLoginInput}/> : 
       <>
-        <Display  bookings={userBookings}/>
+        <Display  userBookings={userBookings} rooms={rooms} showAdd={showAdd}/>
       </>}
       {errorMessage && errorMessage}
     </>
