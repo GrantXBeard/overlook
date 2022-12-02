@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Login from './Components/Login/Login';
+import Display from './Components/Display/Display';
 import { ICustomerData, IBookingData, IRoomData } from './Types/OverlookTypes'
 
 function App() {
-
 
   const [currentUser, setCurrentUser] = useState<ICustomerData>()
   const [customers, setAllCustomers] = useState([])
@@ -34,21 +34,21 @@ function App() {
 
   const checkLoginInput = (username: string, password: string) => {
     let id = parseInt(username.split('').splice(8).join(''))
-    customers.forEach((customer: ICustomerData) => {
-      if (customer.id === id && password === 'overlook2021') {
-        setErrorMessage('')
-        getCurrentUser(id)
-      } else {
-        setErrorMessage('Please enter a valid username and password')
-      }
-    })
+    let idArray = customers.map((customer: ICustomerData) => customer.id)
+    if (idArray.includes(id) && password === 'overlook2021') {
+      getCurrentUser(id)
+      setErrorMessage('')
+    } else {
+    setErrorMessage('Please enter a valid username and password')
+    }
+    
   }
 
   const getCurrentUser = (id: number) => {
-   const user: any =  customers.find((customer: ICustomerData) => customer.id === id)
-   setCurrentUser(user)
-   getCurrentBookings(user.id)
-   getTotalRoomCost()
+    const user: any =  customers.find((customer: ICustomerData) => customer.id === id)
+    setCurrentUser(user)
+    getCurrentBookings(user.id)
+    getTotalRoomCost()
   }
 
   const getCurrentBookings = (id: number) => {
@@ -58,7 +58,6 @@ function App() {
 
   const getTotalRoomCost = () => {
     let total = rooms.reduce((acc: number, curr: IRoomData) => {
-
       userBookings.forEach((booking: IBookingData) => {
         if (booking.roomNumber === curr.number) {
           acc += curr.costPerNight
@@ -68,19 +67,16 @@ function App() {
     }, 0)
     return total.toFixed(2)
   }
-  console.log(currentUser)
 
   return (
     <>
-      <div>APP</div>
-      {currentUser === undefined && <Login handleUserInput={checkLoginInput}/>}
-      {/* {errorMessage.length > 1 && <h2>{errorMessage}</h2>} */}
-      {currentUser && 
+      {!currentUser ? <Login handleUserInput={checkLoginInput}/> : 
       <>
         <p>{`Welcome Back ${currentUser.name.split(' ')[0]}!`}</p>
         <p>{`You've spent $${getTotalRoomCost()} on bookings.`}</p>
-      </>
-      }
+        <Display  bookings={userBookings}/>
+      </>}
+      {errorMessage && errorMessage}
     </>
   );
 }

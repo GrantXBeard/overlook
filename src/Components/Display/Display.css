@@ -1,0 +1,6 @@
+.display-card {
+    /* display: flex; */
+    border: 3px;
+    border-color: brown;
+    border-style: solid;
+}
