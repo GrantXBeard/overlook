@@ -1,15 +1,30 @@
 import React from "react";
 import './Display.css'
-import { IBookingData } from "../../Types/OverlookTypes";
+import { IBookingData, IRoomData } from "../../Types/OverlookTypes";
 
 
 interface IDisplayProps {
-    bookings: IBookingData[]
+    userBookings: IBookingData[]
+    rooms: IRoomData[]
+    showAdd: boolean
 }
 
-const Display = ({ bookings }: IDisplayProps) => {
+const Display = ({ userBookings, rooms, showAdd }: IDisplayProps) => {
 
-    const bookedCards = bookings.map(booking => {
+    const availableRooms = rooms.map(room => {
+        return(
+            <div className="display-card">
+                <p>Room #: {room.number}</p>
+                <p>Type: {room.roomType}</p>
+                <p>Beds: {room.numBeds}</p>
+                <p>Bed size: {room.bedSize}</p>
+                <p>Cost per night: ${room.costPerNight}</p>
+                <button>Book!</button>
+            </div>
+        )
+    })
+
+    const bookedCards = userBookings.map(booking => {
         return(
             <div className="display-card" key={booking.id}>
                 <p>{booking.date}</p>
@@ -19,7 +34,12 @@ const Display = ({ bookings }: IDisplayProps) => {
     })
 
     return (
-        <div>{bookedCards}</div>
+        <div>{
+            showAdd ? 
+            availableRooms
+            :
+            bookedCards
+        }</div>
     )
 }
 
