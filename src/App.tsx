@@ -14,6 +14,7 @@ function App() {
   const [userBookings, setUserBookings] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   const [showAdd, setShowAdd] = useState(false)
+  const [chosenDate, setChosenDate] = useState('')
 
   const fetchData = (dataSet: string) => {
     return fetch(`http://localhost:3001/api/v1/${dataSet}`).then((res) => res.json())
@@ -69,12 +70,29 @@ function App() {
     return total.toFixed(2)
   }
 
+  const getAvailableRooms = (date: string) => {
+    var bookingsForDay = 
+      bookings.filter((booking: IBookingData) => booking.date === date)
+      .reduce((acc: any, curr: IBookingData) => {
+        rooms.forEach((room: IRoomData) => {
+          if (room.number !== curr.roomNumber) {
+            acc.push(room)
+          }
+        })
+        return acc
+      }, [])
+    let newArr = bookingsForDay.filter((bking: IBookingData, index: any) => {
+      return bookingsForDay.indexOf(bking) !== index
+    })
+    return newArr
+  }
+
   return (
     <>
-      <Header user={currentUser} roomCost={getTotalRoomCost()} setShowAdd={setShowAdd}/>
+      <Header user={currentUser} roomCost={getTotalRoomCost()} setShowAdd={setShowAdd} showAdd={showAdd} setDate={setChosenDate}/>
       {!currentUser ? <Login handleUserInput={checkLoginInput}/> : 
       <>
-        <Display  userBookings={userBookings} rooms={rooms} showAdd={showAdd}/>
+        <Display  userBookings={userBookings} rooms={rooms} showAdd={showAdd} chosenDate={chosenDate} allBookings={bookings}/>
       </>}
       {errorMessage && errorMessage}
     </>
